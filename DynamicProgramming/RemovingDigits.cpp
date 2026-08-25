@@ -2,29 +2,34 @@
 
 #include <bits/stdc++.h>
 using namespace std;
+#define int long long
 #define endl '\n'
+const int MAX = INT_MAX;
 
 __int32_t main(){
 
     ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-    int num; cin>>num;
+    int x; cin>>x;
 
-    int resp = 0;
-    while(num > 0){
-        resp++;
-        int sub = 0, numAt = num;
-        for(int i = 6 ; i >= 0 ; i--){
-            int pot = pow(10, i);
-            int elev = numAt / pot;
+    vector<int> dp(x+1, MAX); dp[x] = 0;
 
-            sub = max(sub, elev);
-            numAt -= elev*pot;
+    for(int i = x ; i >= 0 ; i--){
+        if(dp[i] == INT_MAX) continue;
+        
+        int atP = i;
+        while(atP){
+            int at = atP % 10;
+
+            if(i - at >= 0){
+                dp[i - at] = min(dp[i - at], dp[i]+1);
+            }
+
+            atP /= 10;
         }
-        num = num-sub;
     }
 
-    cout<<resp<<endl;
+    cout<<dp[0]<<endl;
 
     return 0;
 }
